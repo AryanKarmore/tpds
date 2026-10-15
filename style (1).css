@@ -1,0 +1,19 @@
+body { background: #f1f4f9; }
+.navbar { background: #0f1b3d; }
+
+.hero { background: linear-gradient(120deg, #2563eb, #9333ea); color: #fff; border-radius: 14px; }
+.avatar {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: #fff; color: #2563eb; font-size: 2rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.stat { border-radius: 12px; }
+.stat .num { font-size: 1.5rem; font-weight: 700; }
+.s1 { background: #e3efff; } .s2 { background: #dcf7e8; }
+.s3 { background: #fff3d1; } .s4 { background: #fbe1e3; }
+
+.card-box { border: 0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, .06); }
+thead.table-head th { background: #0d5bd7; color: #fff; font-weight: 600; white-space: nowrap; }
+.empty { color: #8a94a6; }
+.marks-row input { max-width: 100%; }
