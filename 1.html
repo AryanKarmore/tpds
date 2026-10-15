@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Registration Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body { background:#f1f4f9; }
+  .navbar { background:#0f1b3d; }
+  .hero { background:linear-gradient(120deg,#2563eb,#9333ea); color:#fff; border-radius:14px; }
+  .avatar { width:84px; height:84px; border-radius:50%; background:#fff; color:#2563eb;
+            font-size:2rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .stat { border:0; border-radius:12px; }
+  .stat .num { font-size:1.5rem; font-weight:700; }
+  .s1{background:#e3efff}.s2{background:#dcf7e8}.s3{background:#fff3d1}.s4{background:#fbe1e3}
+  .card-box { border:0; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  thead.table-head th { background:#0d5bd7; color:#fff; font-weight:600; }
+  .empty { color:#8a94a6; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="#">🎓 Student Portal</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div id="nav" class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="#top">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#register">Register</a></li>
+        <li class="nav-item"><a class="nav-link" href="#students">Students</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4" id="top">
+
+  <!-- Hero: featured student -->
+  <section class="hero p-4 mb-4">
+    <div class="row align-items-center g-3">
+      <div class="col-auto"><div class="avatar" id="heroAvatar">?</div></div>
+      <div class="col">
+        <h3 class="mb-1" id="heroName">No student selected</h3>
+        <div class="small opacity-75" id="heroMeta">Register a student to see their profile here.</div>
+        <button class="btn btn-primary btn-sm mt-2" id="heroBtn" disabled>View Details</button>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="bg-white text-dark rounded p-3">
+          <div class="fw-semibold small mb-1">Attendance</div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="progress flex-grow-1" style="height:12px"><div class="progress-bar bg-success" id="heroBar" style="width:0%"></div></div>
+            <span class="small" id="heroPct">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="row g-3 mb-4">
+    <div class="col-6 col-lg-3"><div class="stat s1 p-3"><div class="small text-primary fw-semibold">👥 Total Students</div><div class="num" id="stTotal">0</div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat s2 p-3"><div class="small text-success fw-semibold">📊 Average CGPA</div><div class="num" id="stCgpa">–</div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat s3 p-3"><div class="small text-warning fw-semibold">🗓 Avg Attendance</div><div class="num" id="stAtt">–</div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat s4 p-3"><div class="small text-danger fw-semibold">🏆 Top Scorer</div><div class="num fs-5" id="stTop">–</div></div></div>
+  </section>
+
+  <!-- Registration form -->
+  <section class="card card-box mb-4" id="register">
+    <div class="card-body">
+      <h5 class="mb-3">Register a Student</h5>
+      <form id="regForm" class="row g-3 needs-validation" novalidate>
+        <div class="col-md-6"><label class="form-label">Full Name</label>
+          <input id="name" class="form-control" required minlength="3" pattern="[A-Za-z .'-]{3,}">
+          <div class="invalid-feedback">Enter a valid name (letters only, min 3 chars).</div></div>
+        <div class="col-md-6"><label class="form-label">Roll No.</label>
+          <input id="roll" class="form-control" required placeholder="22CS101">
+          <div class="invalid-feedback" id="rollErr">Roll number is required.</div></div>
+        <div class="col-md-6"><label class="form-label">Email</label>
+          <input id="email" type="email" class="form-control" required>
+          <div class="invalid-feedback">Enter a valid email address.</div></div>
+        <div class="col-md-6"><label class="form-label">Branch</label>
+          <select id="branch" class="form-select" required>
+            <option value="">Choose...</option>
+            <option>Computer Science &amp; Engineering</option>
+            <option>Electronics &amp; Communication</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+          </select>
+          <div class="invalid-feedback">Select a branch.</div></div>
+        <div class="col-md-4"><label class="form-label">Batch (start year)</label>
+          <input id="batch" type="number" class="form-control" min="2015" max="2035" required value="2024">
+          <div class="invalid-feedback">Enter a year between 2015 and 2035.</div></div>
+        <div class="col-md-4"><label class="form-label">CGPA (0–10)</label>
+          <input id="cgpa" type="number" step="0.01" min="0" max="10" class="form-control" required>
+          <div class="invalid-feedback">CGPA must be 0–10.</div></div>
+        <div class="col-md-4"><label class="form-label">Attendance (%)</label>
+          <input id="att" type="number" min="0" max="100" class="form-control" required>
+          <div class="invalid-feedback">Attendance must be 0–100.</div></div>
+        <div class="col-12 d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Register</button>
+          <button class="btn btn-outline-secondary" type="reset" id="resetBtn">Reset</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section class="card card-box" id="students">
+    <div class="card-body">
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-md"><h5 class="mb-0">Registered Students</h5></div>
+        <div class="col-md-4"><input id="search" class="form-control form-control-sm" placeholder="Search name, roll or email..."></div>
+        <div class="col-md-3"><select id="filter" class="form-select form-select-sm"><option value="">All branches</option></select></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center mb-0">
+          <thead class="table-head"><tr><th>#</th><th class="text-start">Name</th><th>Roll No.</th><th>Branch</th><th>CGPA</th><th>Grade</th><th>Action</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="empty" class="empty text-center py-4 d-none">No students found.</div>
+    </div>
+  </section>
+</main>
+
+<!-- Details modal -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h6 class="modal-title">Student Details</h6><button class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body"><table class="table table-sm mb-0"><tbody id="detailBody"></tbody></table></div>
+    <div class="modal-footer"><button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button></div>
+  </div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const KEY = 'students_v1';
+const $ = id => document.getElementById(id);
+let students = [];
+try { students = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) {}
+let featured = students.length ? students[0].roll : null;
+const modal = new bootstrap.Modal($('detailModal'));
+
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(students)); } catch(e) {} };
+const grade = c => c >= 9 ? 'A+' : c >= 8 ? 'A' : c >= 7 ? 'B' : c >= 6 ? 'C' : c >= 5 ? 'D' : 'F';
+const gradeCls = g => ({'A+':'success','A':'success','B':'primary','C':'warning','D':'warning','F':'danger'}[g]);
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const avg = (arr, k) => arr.length ? arr.reduce((a, s) => a + s[k], 0) / arr.length : 0;
+
+function renderStats() {
+  $('stTotal').textContent = students.length;
+  $('stCgpa').textContent = students.length ? avg(students, 'cgpa').toFixed(2) : '–';
+  $('stAtt').textContent = students.length ? Math.round(avg(students, 'att')) + '%' : '–';
+  const top = [...students].sort((a, b) => b.cgpa - a.cgpa)[0];
+  $('stTop').textContent = top ? top.name.split(' ')[0] + ' (' + top.cgpa + ')' : '–';
+}
+
+function renderHero() {
+  const s = students.find(x => x.roll === featured);
+  $('heroBtn').disabled = !s;
+  if (!s) { $('heroAvatar').textContent = '?'; $('heroName').textContent = 'No student selected';
+    $('heroMeta').textContent = 'Register a student to see their profile here.';
+    $('heroBar').style.width = '0%'; $('heroPct').textContent = '0%'; return; }
+  $('heroAvatar').textContent = s.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  $('heroName').textContent = s.name;
+  $('heroMeta').innerHTML = `Roll No: ${esc(s.roll)}<br>${esc(s.branch)}<br>Batch: ${s.batch} - ${s.batch + 4}`;
+  $('heroBar').style.width = s.att + '%'; $('heroPct').textContent = s.att + '%';
+}
+
+function renderFilter() {
+  const cur = $('filter').value;
+  const branches = [...new Set(students.map(s => s.branch))];
+  $('filter').innerHTML = '<option value="">All branches</option>' + branches.map(b => `<option>${esc(b)}</option>`).join('');
+  $('filter').value = branches.includes(cur) ? cur : '';
+}
+
+function renderTable() {
+  const q = $('search').value.trim().toLowerCase(), f = $('filter').value;
+  const list = students.filter(s => (!f || s.branch === f) &&
+    (!q || [s.name, s.roll, s.email].some(v => v.toLowerCase().includes(q))));
+  $('tbody').innerHTML = list.map((s, i) => {
+    const g = grade(s.cgpa);
+    return `<tr><td>${i + 1}</td><td class="text-start">${esc(s.name)}</td><td>${esc(s.roll)}</td>
+      <td>${esc(s.branch)}</td><td>${s.cgpa.toFixed(2)}</td>
+      <td><span class="badge bg-${gradeCls(g)}">${g}</span></td>
+      <td><button class="btn btn-primary btn-sm" data-view="${esc(s.roll)}">View</button>
+          <button class="btn btn-outline-danger btn-sm" data-del="${esc(s.roll)}">Delete</button></td></tr>`;
+  }).join('');
+  $('empty').classList.toggle('d-none', list.length > 0);
+}
+
+function renderAll() { renderStats(); renderHero(); renderFilter(); renderTable(); }
+
+function showDetails(roll) {
+  const s = students.find(x => x.roll === roll); if (!s) return;
+  const rows = [['Name', s.name], ['Roll No.', s.roll], ['Email', s.email], ['Branch', s.branch],
+    ['Batch', `${s.batch} - ${s.batch + 4}`], ['CGPA', s.cgpa.toFixed(2)], ['Grade', grade(s.cgpa)],
+    ['Attendance', s.att + '%'], ['Registered', s.date]];
+  $('detailBody').innerHTML = rows.map(([k, v]) => `<tr><th class="w-35">${k}</th><td>${esc(v)}</td></tr>`).join('');
+  modal.show();
+}
+
+$('regForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const form = e.target, roll = $('roll').value.trim().toUpperCase();
+  const dup = students.some(s => s.roll === roll);
+  $('roll').setCustomValidity(dup ? 'dup' : '');
+  $('rollErr').textContent = dup ? 'This roll number is already registered.' : 'Roll number is required.';
+  form.classList.add('was-validated');
+  if (!form.checkValidity()) return;
+  const s = { name: $('name').value.trim(), roll, email: $('email').value.trim(), branch: $('branch').value,
+    batch: +$('batch').value, cgpa: +$('cgpa').value, att: +$('att').value, date: new Date().toLocaleDateString() };
+  students.unshift(s); featured = s.roll; save();
+  form.reset(); $('batch').value = 2024; form.classList.remove('was-validated');
+  renderAll();
+});
+$('resetBtn').addEventListener('click', () => $('regForm').classList.remove('was-validated'));
+$('roll').addEventListener('input', () => $('roll').setCustomValidity(''));
+$('search').addEventListener('input', renderTable);
+$('filter').addEventListener('change', renderTable);
+$('heroBtn').addEventListener('click', () => showDetails(featured));
+$('tbody').addEventListener('click', e => {
+  const v = e.target.dataset.view, d = e.target.dataset.del;
+  if (v) { featured = v; renderHero(); showDetails(v); }
+  if (d && confirm('Delete this student?')) {
+    students = students.filter(s => s.roll !== d);
+    if (featured === d) featured = students[0]?.roll || null;
+    save(); renderAll();
+  }
+});
+renderAll();
+</script>
+</body>
+</html>
